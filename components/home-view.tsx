@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { Avatar } from "@/components/avatar";
 import { PrizeCard } from "@/components/prize-card";
 import { Button } from "@/components/ui/button";
@@ -102,8 +101,8 @@ export function HomeView({ stats }: { stats: HomeStats }) {
           : "সদ্য কাটা কার্ড। ছবি এক্সের পাবলিক প্রোফাইল থেকে।"}
       </p>
 
-      <div className="mt-10 overflow-hidden border-y border-gold/15 py-3">
-        <div className="marquee-track flex gap-8 whitespace-nowrap text-sm tracking-[0.18em] text-gold/80 uppercase">
+      <div className="mt-10 overflow-hidden border-y border-gold/15 py-4">
+        <div className="marquee-track flex items-center gap-8 py-1 leading-8 whitespace-nowrap text-sm tracking-[0.18em] text-gold/80">
           {Array.from({ length: 2 }, (_, copy) => (
             <span key={copy} className="flex gap-8">
               <span>হোল্ড স্পার্ক</span>
@@ -213,27 +212,9 @@ function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div>
       <dt className="text-xs text-cream/50">{label}</dt>
-      <dd className="mt-1 font-mono text-2xl text-cream">
-        <CountUp value={value} />
-      </dd>
+      <dd className="mt-1 font-mono text-2xl text-cream">{formatNumber(value)}</dd>
     </div>
   );
-}
-
-function CountUp({ value }: { value: number }) {
-  const [shown, setShown] = useState(0);
-  useEffect(() => {
-    const start = performance.now();
-    let frame = 0;
-    const tick = (time: number) => {
-      const progress = Math.min(1, (time - start) / 800);
-      setShown(Math.round(value * (1 - (1 - progress) ** 3)));
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [value]);
-  return <>{formatNumber(shown)}</>;
 }
 
 function RewardBlock({

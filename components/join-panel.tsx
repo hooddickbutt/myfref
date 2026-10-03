@@ -70,7 +70,7 @@ export function JoinPanel() {
             <span className="mb-2 block text-sm text-cream/70">এক্স আইডি</span>
             <Input
               value={handle}
-              onChange={(event) => setHandle(event.target.value.replace(/^@+/, ""))}
+              onValueChange={(value) => setHandle(value.replace(/^@+/, ""))}
               placeholder="তোমার এক্স আইডি"
               autoCapitalize="none"
               autoCorrect="off"
@@ -83,7 +83,7 @@ export function JoinPanel() {
             <span className="mb-2 block text-sm text-cream/70">রেফার আইডি, থাকলে</span>
             <Input
               value={ref}
-              onChange={(event) => setRef(event.target.value.replace(/^@+/, ""))}
+              onValueChange={(value) => setRef(value.replace(/^@+/, ""))}
               placeholder="যে আইডি থেকে লিংক পেয়েছ"
               autoCapitalize="none"
               autoCorrect="off"

@@ -148,7 +148,7 @@ export function JackpotPanel() {
               {phase === "request" || phase === "spinning"
                 ? "ঘুরছে…"
                 : cooling > 0
-                  ? `${Math.ceil(cooling / 1000)} সেকেন্ড পর আবার`
+                  ? `${formatNumber(Math.ceil(cooling / 1000))} সেকেন্ড পর আবার`
                   : "চাকা ঘোরাও"}
             </Button>
           </div>

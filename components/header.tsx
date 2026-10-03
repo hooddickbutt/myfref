@@ -21,7 +21,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-gold/15 bg-ink/75 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
           <span className="grid size-9 place-items-center rounded-full border border-gold/50">
             <span className="size-2.5 rounded-full bg-mint" />
@@ -34,7 +34,15 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="ml-auto flex items-center gap-1 overflow-x-auto text-sm">
+        {mine ? (
+          <Link
+            href={`/card/${mine}`}
+            className="ml-auto rounded-full bg-gold px-3 py-1.5 text-sm font-medium whitespace-nowrap text-ink sm:ml-0"
+          >
+            আমার কার্ড
+          </Link>
+        ) : null}
+        <nav className="flex w-full items-center gap-1 overflow-x-auto text-sm sm:ml-auto sm:w-auto">
           {links.map((link) => {
             const active = pathname === link.href;
             return (
@@ -50,14 +58,6 @@ export function Header() {
               </Link>
             );
           })}
-          {mine ? (
-            <Link
-              href={`/card/${mine}`}
-              className="rounded-full bg-gold px-3 py-1.5 font-medium whitespace-nowrap text-ink"
-            >
-              আমার কার্ড
-            </Link>
-          ) : null}
           <a
             href={pump.url}
             target="_blank"

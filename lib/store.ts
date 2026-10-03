@@ -16,6 +16,7 @@ import {
   rollRarity,
   ticketCount,
 } from "@/lib/economy";
+import { formatNumber } from "@/lib/format";
 import type { Holder, HomeStats, PublicCard, StoreData } from "@/lib/types";
 import { lookupXProfile } from "@/lib/x-profile";
 
@@ -212,7 +213,7 @@ export async function joinHolder(handleInput: string, refInput?: string | null) 
 
     const ignoredRef = Boolean(referredBy && referredBy !== handle && !referrer);
     const note = referrer
-      ? `@${referrer.displayHandle} এর লিংকে এসেছ। তুমি ${INVITEE_BONUS} স্পার্ক বেশি পেয়েছ।`
+      ? `@${referrer.displayHandle} এর লিংকে এসেছ। তুমি ${formatNumber(INVITEE_BONUS)} স্পার্ক বেশি পেয়েছ।`
       : ignoredRef
         ? "রেফার আইডি পাওয়া যায়নি, তাই কার্ড একাই কাটা হয়েছে।"
         : "কার্ড কাটা হয়েছে। প্রোফাইল ছবি বসে গেছে।";
