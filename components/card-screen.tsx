@@ -25,7 +25,7 @@ export function CardScreen({ card }: { card: PublicCard }) {
   }
 
   function copyReferral() {
-    void copy(`${window.location.origin}${referralPath}`, "লিংক কপি হয়েছে");
+    void copy(`${window.location.origin}${referralPath}`, "Link copied");
   }
 
   async function refresh() {
@@ -35,12 +35,12 @@ export function CardScreen({ card }: { card: PublicCard }) {
       const response = await fetch(`/api/card/${card.handle}`, { method: "POST" });
       const data = (await response.json()) as { ok: boolean; error?: string };
       if (!data.ok) {
-        setError(data.error || "আপডেট হয়নি।");
+        setError(data.error || "Could not refresh.");
         return;
       }
       router.refresh();
     } catch {
-      setError("আপডেট হয়নি।");
+      setError("Could not refresh.");
     } finally {
       setRefreshing(false);
     }
@@ -57,16 +57,16 @@ export function CardScreen({ card }: { card: PublicCard }) {
         <p className="mt-2 text-cream/65">@{card.displayHandle}</p>
         {card.bio ? <p className="mt-4 max-w-xl text-cream/80">{card.bio}</p> : null}
         <p className="mt-3 text-sm text-cream/55">
-          ফলোয়ার {formatCompact(card.followers)} · কার্ড {formatWhen(card.createdAt)}
-          {card.referredBy ? ` · রেফার @${card.referredBy}` : ""}
+          {formatCompact(card.followers)} followers · card cut {formatWhen(card.createdAt)}
+          {card.referredBy ? ` · referred by @${card.referredBy}` : ""}
         </p>
 
         <dl className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            ["মোট স্পার্ক", formatNumber(card.sparks)],
-            ["হোল্ড থেকে", formatNumber(card.holdSparks)],
-            ["রেফার", formatNumber(card.referrals)],
-            ["টিকিট", formatNumber(card.tickets)],
+            ["Total sparks", formatNumber(card.sparks)],
+            ["From holding", formatNumber(card.holdSparks)],
+            ["Referrals", formatNumber(card.referrals)],
+            ["Tickets", formatNumber(card.tickets)],
           ].map(([label, value]) => (
             <div key={label} className="rounded-2xl border border-white/10 bg-white/5 p-3">
               <dt className="text-xs text-cream/50">{label}</dt>
@@ -75,11 +75,11 @@ export function CardScreen({ card }: { card: PublicCard }) {
           ))}
         </dl>
         <p className="mt-3 text-sm text-cream/60">
-          হোল্ড রেট {formatNumber(card.holdPerUnit)} স্পার্ক / {HOLD_UNIT_LABEL}
+          Hold rate {formatNumber(card.holdPerUnit)} sparks / {HOLD_UNIT_LABEL}
         </p>
 
         <div className="mt-6 rounded-3xl border border-gold/20 p-4">
-          <p className="text-sm text-cream/60">রেফার লিংক</p>
+          <p className="text-sm text-cream/60">Referral link</p>
           <p className="mt-1 break-all font-mono text-sm">{referralPath}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Button
@@ -87,15 +87,15 @@ export function CardScreen({ card }: { card: PublicCard }) {
               className="h-10 rounded-full px-4"
               onClick={copyReferral}
             >
-              লিংক কপি
+              Copy link
             </Button>
             <Button
               type="button"
               variant="outline"
               className="h-10 rounded-full border-gold/30 px-4 text-gold"
-              onClick={() => copy(window.location.href, "কার্ড লিংক কপি হয়েছে")}
+              onClick={() => copy(window.location.href, "Card link copied")}
             >
-              কার্ড লিংক
+              Card link
             </Button>
             {mine === card.handle ? (
               <Button
@@ -105,7 +105,7 @@ export function CardScreen({ card }: { card: PublicCard }) {
                 disabled={refreshing}
                 onClick={refresh}
               >
-                {refreshing ? "আনছি…" : "ছবি আপডেট"}
+                {refreshing ? "Fetching…" : "Refresh photo"}
               </Button>
             ) : null}
           </div>
@@ -114,7 +114,7 @@ export function CardScreen({ card }: { card: PublicCard }) {
         </div>
 
         <div className="mt-6">
-          <h2 className="text-xl">ইনভাইট ধাপ</h2>
+          <h2 className="text-xl">Invite milestones</h2>
           <ul className="mt-3 space-y-3">
             {MILESTONES.map((milestone) => {
               const done = card.milestonesClaimed.includes(milestone.count);
@@ -124,7 +124,7 @@ export function CardScreen({ card }: { card: PublicCard }) {
                   <div className="flex justify-between text-sm">
                     <span>
                       {milestone.title}
-                      {done ? " · পেয়েছে" : ""}
+                      {done ? " · claimed" : ""}
                     </span>
                     <span className="font-mono text-gold">{formatNumber(milestone.bonus)}</span>
                   </div>
@@ -137,17 +137,17 @@ export function CardScreen({ card }: { card: PublicCard }) {
           </ul>
           {upcoming ? (
             <p className="mt-3 text-sm text-cream/60">
-              পরের ধাপ {upcoming.title}: {formatNumber(card.referrals)}/
+              Next: {upcoming.title}: {formatNumber(card.referrals)}/
               {formatNumber(upcoming.count)}
             </p>
           ) : (
-            <p className="mt-3 text-sm text-mint">সব ধাপ পূরণ।</p>
+            <p className="mt-3 text-sm text-mint">Every milestone is done.</p>
           )}
         </div>
 
         {card.invited.length > 0 ? (
           <div className="mt-6">
-            <h2 className="text-xl">যারা এই লিংকে এসেছে</h2>
+            <h2 className="text-xl">Joined from this link</h2>
             <ul className="mt-2 flex flex-wrap gap-2">
               {card.invited.map((handle) => (
                 <li key={handle}>

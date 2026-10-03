@@ -1,41 +1,37 @@
-# HALO — প্রাইজ কার্ড
+# HALO — Prize cards
 
-পাম্পফান মিম টোকেনের জন্য অ্যানিমেটেড সাইট। ইউজার এক্স আইডি দিয়ে জয়েন করে। পাবলিক প্রোফাইল থেকে নাম ও ছবি এসে একটা প্রাইজ কার্ডে বসে। হোল্ড, রেফার আর ইনভাইট মাইলস্টোনে স্পার্ক জমে, জ্যাকপটে টিকিট অনুযায়ী একজন পুরস্কার পায়।
+An animated site for a pump.fun meme token. People join with an X handle. The public profile supplies the name and photo for a prize card. Sparks accrue from holding, referrals, and invite milestones. A ticket-weighted jackpot pays one holder.
 
-স্পার্ক এই সাইটের পয়েন্ট। টোকেন কেনাবেচা পাম্পফানে। ওয়ালেট কানেক্ট বা চেইন থেকে টাকা কাটা হয় না।
+Sparks are points on this site. Buying and selling the token happens on pump.fun. Nothing is pulled from a wallet.
 
-## চালানো
+## Run
 
 ```bash
 npm install
-npm run dev
-```
-
-ডেভ সার্ভার: [http://127.0.0.1:43123](http://127.0.0.1:43123)
-
-```bash
 npx next dev -p 43123
 ```
 
-## কয়েন লিংক
+Dev server: [http://127.0.0.1:43123](http://127.0.0.1:43123)
 
-`env.example` দেখে `.env.local` বানাও:
+## Coin link
+
+Copy `env.example` to `.env.local`:
 
 ```bash
-NEXT_PUBLIC_TOKEN_MINT=তোমার_মিন্ট_অ্যাড্রেস
+NEXT_PUBLIC_TOKEN_MINT=your_mint_address
 ```
 
-সার্ভার রিস্টার্ট করলে হোমের বোতাম `https://pump.fun/coin/<মিন্ট>` এ যাবে।
+Restart the server and the home button goes to `https://pump.fun/coin/<mint>`.
 
-## কী কী হয়
+## What it does
 
-- **জয়েন** — এক্স আইডি (যেমন `nasa`)। পাসওয়ার্ড লাগে না। [fxtwitter](https://github.com/FxEmbed/FxEmbed) পাবলিক এপিআই থেকে প্রোফাইল, না পেলে [unavatar](https://unavatar.io)। ভুল আইডি হলে কার্ড কাটে না।
-- **কার্ড** — এক আইডির এক কার্ড। বিরলতা: সাধারণ, বিরল, এপিক, লেজেন্ডারি, মিথিক।
-- **হোল্ড** — কার্ড খোলার পর প্রতি মিনিটে স্পার্ক। রেট বিরলতা অনুযায়ী (`lib/economy.ts`)।
-- **রেফার** — `/join?ref=আইডি`। আমন্ত্রণকারী ২০০, নতুন জন ৮০।
-- **ইনভাইট** — ৩, ১০, ২৫ জনে আলাদা বোনাস।
-- **জ্যাকপট** — অন্তত দুই হোল্ডার। পুলের ৭০% একজন পায়। টিকিট = কার্ডের বিরলতা + রেফার সংখ্যা। রাউন্ডের মাঝে ৩০ সেকেন্ড বিরতি।
+- **Join** — an X handle such as `nasa`. No password. Profile data comes from the [fxtwitter](https://github.com/FxEmbed/FxEmbed) public API, with [unavatar](https://unavatar.io) as a fallback. A missing handle does not get a card.
+- **Card** — one card per handle. Rarities: Common, Rare, Epic, Legendary, Mythic.
+- **Hold** — sparks each minute after the card is cut. The rate depends on rarity (`lib/economy.ts`).
+- **Refer** — `/join?ref=handle`. The inviter gets 200 sparks, the new holder gets 80.
+- **Invite** — extra bonuses at 3, 10, and 25 people.
+- **Jackpot** — at least two holders. 70% of the pool goes to one winner. Tickets = card rarity + referral count. Rounds pause for 30 seconds.
 
-হিসাব বদলাতে `lib/economy.ts`।
+Change the numbers in `lib/economy.ts`.
 
-হোল্ডার ডেটা লোকালে `data/store.json` এ থাকে। এই ফাইল গিটে যায় না। পাবলিক সার্ভারলেস হোস্টে ফাইল স্টোর টিকে না — সেখান থেকে সবাই একসাথে খেলতে চাইলে ডাটাবেস লাগবে।
+Holder data is stored locally in `data/store.json`. That file is not committed. A serverless host cannot keep a shared file store, so a public multiplayer deploy needs a database.

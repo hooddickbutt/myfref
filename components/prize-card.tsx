@@ -77,8 +77,8 @@ export function PrizeCard({
           <div>
             <p className="font-display text-sm tracking-[0.22em] text-gold">{TOKEN.name}</p>
             <p className="mt-1 text-xs" style={{ color: rarity.ink }}>
-              {rarity.bn}
-              {card.sample ? " · নমুনা" : ""}
+              {rarity.label}
+              {card.sample ? " · Sample" : ""}
             </p>
           </div>
           <p className="font-mono text-xs text-cream/70">#{formatSerial(card.serial)}</p>
@@ -109,20 +109,20 @@ export function PrizeCard({
         <div className="mt-4 border-t border-dashed border-gold/35 pt-4">
           <dl className="grid grid-cols-3 gap-2 text-center">
             <div>
-              <dt className="text-[11px] text-cream/55">স্পার্ক</dt>
+              <dt className="text-[11px] text-cream/55">Sparks</dt>
               <dd className="font-mono text-lg text-gold">{formatNumber(card.sparks)}</dd>
             </div>
             <div>
-              <dt className="text-[11px] text-cream/55">রেফার</dt>
+              <dt className="text-[11px] text-cream/55">Referrals</dt>
               <dd className="font-mono text-lg">{formatNumber(card.referrals)}</dd>
             </div>
             <div>
-              <dt className="text-[11px] text-cream/55">টিকিট</dt>
+              <dt className="text-[11px] text-cream/55">Tickets</dt>
               <dd className="font-mono text-lg text-mint">{formatNumber(card.tickets)}</dd>
             </div>
           </dl>
           <p className="mt-3 text-center text-[11px] tracking-[0.16em] text-cream/45">
-            হোল্ডার কার্ড
+            Holder card
           </p>
         </div>
       </div>

@@ -39,14 +39,14 @@ export function JoinPanel() {
         card?: PublicCard;
       };
       if (!data.ok || !data.card) {
-        setError(data.error || "কার্ড কাটা যায়নি।");
+        setError(data.error || "Could not create the card.");
         return;
       }
       setCard(data.card);
       setNote(data.note || "");
       rememberHandle(data.card.handle);
     } catch {
-      setError("নেটওয়ার্ক আটকেছে। আবার চেষ্টা করো।");
+      setError("The network stalled. Try again.");
     } finally {
       setLoading(false);
     }
@@ -55,23 +55,23 @@ export function JoinPanel() {
   return (
     <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_360px]">
       <div>
-        <p className="text-xs tracking-[0.22em] text-mint uppercase">এক্স আইডি</p>
+        <p className="text-xs tracking-[0.22em] text-mint uppercase">X handle</p>
         <h1 className="mt-3 font-display text-4xl leading-tight sm:text-5xl">
-          পাবলিক প্রোফাইল দিয়ে কার্ড কাটো
+          Cut a card from a public profile
         </h1>
         <p className="mt-4 max-w-xl text-cream/75">
-          পাসওয়ার্ড লাগবে না। আইডি দিলে পাবলিক এপিআই থেকে নাম আর প্রোফাইল ছবি এসে কার্ডে বসবে।
-          জয়েন বোনাস {formatNumber(JOIN_BONUS)} স্পার্ক
-          {ref.trim() ? `, রেফার থাকলে আরও ${formatNumber(INVITEE_BONUS)}` : ""}।
+          No password. A handle pulls the name and profile photo from the public API. Join bonus{" "}
+          {formatNumber(JOIN_BONUS)} sparks
+          {ref.trim() ? `, plus ${formatNumber(INVITEE_BONUS)} if a referral is set` : ""}.
         </p>
 
         <form onSubmit={onSubmit} className="mt-8 space-y-4">
           <label className="block">
-            <span className="mb-2 block text-sm text-cream/70">এক্স আইডি</span>
+            <span className="mb-2 block text-sm text-cream/70">X handle</span>
             <Input
               value={handle}
               onValueChange={(value) => setHandle(value.replace(/^@+/, ""))}
-              placeholder="তোমার এক্স আইডি"
+              placeholder="Your X handle"
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
@@ -80,11 +80,11 @@ export function JoinPanel() {
             />
           </label>
           <label className="block">
-            <span className="mb-2 block text-sm text-cream/70">রেফার আইডি, থাকলে</span>
+            <span className="mb-2 block text-sm text-cream/70">Referral handle, if you have one</span>
             <Input
               value={ref}
               onValueChange={(value) => setRef(value.replace(/^@+/, ""))}
-              placeholder="যে আইডি থেকে লিংক পেয়েছ"
+              placeholder="Handle that sent you the link"
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
@@ -101,7 +101,7 @@ export function JoinPanel() {
             disabled={loading || handle.trim().length === 0}
             className="h-12 rounded-full px-6 text-base"
           >
-            {loading ? "প্রোফাইল আনছি…" : "কার্ড তৈরি করো"}
+            {loading ? "Fetching profile…" : "Create card"}
           </Button>
         </form>
 
@@ -109,7 +109,7 @@ export function JoinPanel() {
         {card ? (
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
             <Link href={`/card/${card.handle}`} className="text-gold underline-offset-4 hover:underline">
-              কার্ড পেজ খোলো
+              Open card page
             </Link>
             <button
               type="button"
@@ -118,7 +118,7 @@ export function JoinPanel() {
                 navigator.clipboard.writeText(`${window.location.origin}/join?ref=${card.handle}`)
               }
             >
-              রেফার লিংক কপি
+              Copy referral link
             </button>
           </div>
         ) : null}
@@ -130,8 +130,8 @@ export function JoinPanel() {
         ) : (
           <div className="grid aspect-[3/4.15] w-[280px] place-items-center rounded-[28px] border border-dashed border-gold/30 bg-white/5 p-6 text-center text-cream/60 sm:w-[320px]">
             <div>
-              <p className="font-display text-2xl text-gold">খালি ফ্রেম</p>
-              <p className="mt-2 text-sm">আইডি দিলে এখানেই কার্ড ফুটে উঠবে, এক্সের ছবিসহ।</p>
+              <p className="font-display text-2xl text-gold">Empty frame</p>
+              <p className="mt-2 text-sm">Enter a handle and the card appears here, with the X photo.</p>
             </div>
           </div>
         )}

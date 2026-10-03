@@ -25,12 +25,12 @@ export default async function CardPage({
   if (!card) {
     return (
       <div className="mx-auto w-full max-w-xl px-4 py-24 text-center sm:px-6">
-        <h1 className="font-display text-4xl">এই কার্ড নেই</h1>
+        <h1 className="font-display text-4xl">No card here</h1>
         <p className="mt-3 text-cream/70">
-          @{handle} এখনো হোল্ডার নয়, অথবা আইডিটা ঠিক নয়।
+          @{handle} is not a holder yet, or the handle is not valid.
         </p>
         <Link href="/join" className="mt-6 inline-flex text-gold">
-          কার্ড কাটো
+          Cut a card
         </Link>
       </div>
     );

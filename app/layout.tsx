@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Hind_Siliguri, Syne } from "next/font/google";
+import { Geist_Mono, Outfit, Syne } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import "./globals.css";
 
-const body = Hind_Siliguri({
-  subsets: ["bengali", "latin"],
+const body = Outfit({
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",
 });
@@ -23,17 +23,17 @@ const mono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "HALO — প্রাইজ কার্ড",
+    default: "HALO — Prize cards",
     template: "%s — HALO",
   },
   description:
-    "পাম্পফান মিম টোকেনের হোল্ডার কার্ড। এক্স আইডি দিয়ে জয়েন করো, প্রোফাইল ছবি কার্ডে বসবে, হোল্ড ও রেফারে স্পার্ক, জ্যাকপটে পুরস্কার।",
+    "Holder cards for a pump.fun meme token. Join with an X handle, put your profile photo on a card, earn sparks for holding and referring, and spin the jackpot.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="bn"
+      lang="en"
       className={`${body.variable} ${display.variable} ${mono.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">

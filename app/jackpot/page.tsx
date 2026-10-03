@@ -1,7 +1,7 @@
 import { JackpotPanel } from "@/components/jackpot-panel";
 
 export const metadata = {
-  title: "জ্যাকপট",
+  title: "Jackpot",
 };
 
 export default function JackpotPage() {

@@ -37,13 +37,13 @@ export function JackpotPanel() {
       const response = await fetch("/api/jackpot", { cache: "no-store" });
       const data = (await response.json()) as Board & { ok: boolean; error?: string };
       if (!data.ok) {
-        setLoadError(data.error || "জ্যাকপট আনা যায়নি।");
+        setLoadError(data.error || "Could not load the jackpot.");
         return;
       }
       setBoard(data);
       setLoadError("");
     } catch {
-      setLoadError("জ্যাকপট আনা যায়নি।");
+      setLoadError("Could not load the jackpot.");
     }
   }
 
@@ -72,7 +72,7 @@ export function JackpotPanel() {
         draw?: PublicDraw;
       };
       if (!data.ok || !data.draw) {
-        setError(data.error || "এবার ঘোরানো যায়নি।");
+        setError(data.error || "Could not spin this round.");
         setPhase("idle");
         return;
       }
@@ -85,7 +85,7 @@ export function JackpotPanel() {
       setPhase("spinning");
       setSpin({ id: Date.now(), winner: data.draw.winnerHandle, prize: data.draw.prize });
     } catch {
-      setError("নেটওয়ার্ক আটকেছে।");
+      setError("The network stalled.");
       setPhase("idle");
     }
   }
@@ -95,29 +95,29 @@ export function JackpotPanel() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
       <section>
-        <p className="text-xs tracking-[0.22em] text-rose uppercase">জ্যাকপট</p>
+        <p className="text-xs tracking-[0.22em] text-rose uppercase">Jackpot</p>
         <h1 className="mt-3 font-display text-4xl leading-tight sm:text-5xl">
-          টিকিট যার বেশি, নাম ওঠার সুযোগ তার বেশি
+          More tickets, better odds
         </h1>
         <p className="mt-4 max-w-xl text-cream/75">
-          প্রতিটি জয়েনে পুল বাড়ে। ড্র হলে পুলের {formatPercent(JACKPOT_PAYOUT)} স্পার্ক একজন
-          হোল্ডারের কার্ডে যায়। বিরল কার্ড আর রেফারে টিকিট বাড়ে।
+          Every join grows the pool. A draw sends {formatPercent(JACKPOT_PAYOUT)} of it to one
+          holder. Rarer cards and referrals add tickets.
         </p>
 
         <div className="mt-8 rounded-[28px] border border-gold/25 bg-white/5 p-4 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-sm text-cream/60">প্রাইজ পুল</p>
+              <p className="text-sm text-cream/60">Prize pool</p>
               <p className="font-mono text-5xl text-gold">{formatNumber(board?.pool ?? 0)}</p>
             </div>
             <div className="text-sm text-cream/70">
-              <p>হোল্ডার {formatNumber(board?.holderCount ?? 0)}</p>
+              <p>Holders {formatNumber(board?.holderCount ?? 0)}</p>
               {mineCard ? (
                 <p className="text-mint">
-                  তোমার টিকিট {formatNumber(mineCard.tickets)} · সুযোগ {formatPercent(mineCard.chance)}
+                  Your tickets {formatNumber(mineCard.tickets)} · odds {formatPercent(mineCard.chance)}
                 </p>
               ) : (
-                <p>কার্ড কাটলে এখানে তোমার সুযোগ দেখাবে।</p>
+                <p>Cut a card and your odds show up here.</p>
               )}
             </div>
           </div>
@@ -132,7 +132,7 @@ export function JackpotPanel() {
 
           {phase === "revealed" && winner && spin ? (
             <p className="mt-4 text-center text-lg">
-              <span className="text-gold">{winner.name}</span> পেয়েছে {formatNumber(spin.prize)} স্পার্ক
+              <span className="text-gold">{winner.name}</span> won {formatNumber(spin.prize)} sparks
             </p>
           ) : null}
           {error ? <p className="mt-4 text-center text-sm text-rose">{error}</p> : null}
@@ -146,21 +146,21 @@ export function JackpotPanel() {
               className="h-12 rounded-full px-6 text-base"
             >
               {phase === "request" || phase === "spinning"
-                ? "ঘুরছে…"
+                ? "Spinning…"
                 : cooling > 0
-                  ? `${formatNumber(Math.ceil(cooling / 1000))} সেকেন্ড পর আবার`
-                  : "চাকা ঘোরাও"}
+                  ? `Again in ${formatNumber(Math.ceil(cooling / 1000))}s`
+                  : "Spin the wheel"}
             </Button>
           </div>
           <p className="mt-3 text-center text-xs text-cream/45">
-            রাউন্ডের মাঝে অল্প বিরতি, যাতে একই মুহূর্তে বারবার না ঘোরে। অন্তত দুইজন হোল্ডার লাগবে।
+            A short pause between rounds so the wheel is not spun twice at once. At least two holders are required.
           </p>
         </div>
       </section>
 
       <aside className="space-y-4">
         <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-          <h2 className="text-lg">টিকিট বোর্ড</h2>
+          <h2 className="text-lg">Ticket board</h2>
           <ul className="mt-3 space-y-2">
             {(board?.entrants ?? []).slice(0, 8).map((card) => (
               <li key={card.handle} className="flex items-center justify-between gap-3 text-sm">
@@ -172,23 +172,23 @@ export function JackpotPanel() {
               </li>
             ))}
             {board && board.entrants.length === 0 ? (
-              <li className="text-sm text-cream/55">এখনো কেউ নেই। দুইজন জয়েন করলে চাকা চলবে।</li>
+              <li className="text-sm text-cream/55">Nobody yet. The wheel starts once two people join.</li>
             ) : null}
           </ul>
         </div>
         <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-          <h2 className="text-lg">আগের জয়</h2>
+          <h2 className="text-lg">Past wins</h2>
           <ul className="mt-3 space-y-3">
             {(board?.draws ?? []).map((draw) => (
               <li key={draw.id} className="text-sm">
                 <p>
-                  {draw.winnerName} · {formatNumber(draw.prize)} স্পার্ক
+                  {draw.winnerName} · {formatNumber(draw.prize)} sparks
                 </p>
                 <p className="text-cream/45">{formatWhen(draw.at)}</p>
               </li>
             ))}
             {board && board.draws.length === 0 ? (
-              <li className="text-sm text-cream/55">এখনো কোনো ড্র হয়নি।</li>
+              <li className="text-sm text-cream/55">No draws yet.</li>
             ) : null}
           </ul>
         </div>
@@ -250,7 +250,7 @@ function ReelRow({ row }: { row: Entrant }) {
       <span className="min-w-0">
         <span className="block truncate">{row.name}</span>
         <span className="block text-xs text-cream/50">
-          @{row.displayHandle} · টিকিট {formatNumber(row.tickets)}
+          @{row.displayHandle} · {formatNumber(row.tickets)} tickets
         </span>
       </span>
     </div>
@@ -262,13 +262,13 @@ function placeholderRows(): Entrant[] {
     {
       handle: "waiting",
       displayHandle: "halo",
-      name: "হোল্ডারের অপেক্ষায়",
+      name: "Waiting for holders",
       avatar: null,
       bio: "",
       followers: 0,
       serial: 0,
       rarity: "common",
-      rarityLabel: "সাধারণ",
+      rarityLabel: "Common",
       sparks: 0,
       holdSparks: 0,
       baseSparks: 0,

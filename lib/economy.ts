@@ -14,18 +14,18 @@ export const JACKPOT_COOLDOWN_MS = 30_000;
 export const MIN_DRAW_HOLDERS = 2;
 export const MIN_POOL = 50;
 export const HOLD_UNIT_MS = 60_000;
-export const HOLD_UNIT_LABEL = "মিনিট";
+export const HOLD_UNIT_LABEL = "minute";
 
 export const MILESTONES = [
-  { count: 3, bonus: 400, title: "তিনজনকে আনো" },
-  { count: 10, bonus: 1500, title: "দশজনকে আনো" },
-  { count: 25, bonus: 5000, title: "পঁচিশজনকে আনো" },
+  { count: 3, bonus: 400, title: "Invite 3 people" },
+  { count: 10, bonus: 1500, title: "Invite 10 people" },
+  { count: 25, bonus: 5000, title: "Invite 25 people" },
 ] as const;
 
 export const RARITIES: Record<
   Rarity,
   {
-    bn: string;
+    label: string;
     weight: number;
     holdPerUnit: number;
     tickets: number;
@@ -34,7 +34,7 @@ export const RARITIES: Record<
   }
 > = {
   common: {
-    bn: "সাধারণ",
+    label: "Common",
     weight: 55,
     holdPerUnit: 1,
     tickets: 1,
@@ -42,7 +42,7 @@ export const RARITIES: Record<
     glow: "rgba(217,211,199,0.55)",
   },
   rare: {
-    bn: "বিরল",
+    label: "Rare",
     weight: 25,
     holdPerUnit: 2,
     tickets: 2,
@@ -50,7 +50,7 @@ export const RARITIES: Record<
     glow: "rgba(126,200,255,0.6)",
   },
   epic: {
-    bn: "এপিক",
+    label: "Epic",
     weight: 12,
     holdPerUnit: 3,
     tickets: 4,
@@ -58,7 +58,7 @@ export const RARITIES: Record<
     glow: "rgba(192,132,252,0.62)",
   },
   legendary: {
-    bn: "লেজেন্ডারি",
+    label: "Legendary",
     weight: 6,
     holdPerUnit: 5,
     tickets: 8,
@@ -66,7 +66,7 @@ export const RARITIES: Record<
     glow: "rgba(240,195,106,0.7)",
   },
   mythic: {
-    bn: "মিথিক",
+    label: "Mythic",
     weight: 2,
     holdPerUnit: 8,
     tickets: 16,
@@ -108,7 +108,7 @@ export function presentHolder(holder: Holder, now = Date.now()): PublicCard {
     followers: holder.followers,
     serial: holder.serial,
     rarity: holder.rarity,
-    rarityLabel: RARITIES[holder.rarity].bn,
+    rarityLabel: RARITIES[holder.rarity].label,
     sparks: totalSparks(holder, now),
     holdSparks: holdSparks(holder, now),
     baseSparks: holder.baseSparks,

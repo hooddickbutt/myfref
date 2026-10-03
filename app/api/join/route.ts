@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       ref?: unknown;
     } | null;
     if (!body || typeof body.handle !== "string") {
-      return Response.json({ ok: false, error: "এক্স আইডি দাও।" }, { status: 400 });
+      return Response.json({ ok: false, error: "Enter an X handle." }, { status: 400 });
     }
     const ref = typeof body.ref === "string" ? body.ref : "";
     const result = await joinHolder(body.handle, ref);

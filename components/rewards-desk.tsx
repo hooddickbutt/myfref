@@ -58,28 +58,28 @@ export function RewardsDesk() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
       <section>
-        <p className="text-xs tracking-[0.22em] text-mint uppercase">স্পার্ক</p>
+        <p className="text-xs tracking-[0.22em] text-mint uppercase">Sparks</p>
         <h1 className="mt-3 font-display text-4xl leading-tight sm:text-5xl">
-          হোল্ড, রেফার, ইনভাইট — তিনটা আলাদা হিসাব
+          Hold, refer, invite. Three separate ledgers.
         </h1>
         <div className="mt-8 space-y-4">
           <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
-            <h2 className="text-2xl">হোল্ড</h2>
+            <h2 className="text-2xl">Hold</h2>
             <p className="mt-2 text-cream/70">
-              কার্ড কাটার পর থেকে সময় ধরে স্পার্ক জমে। রেট কার্ডের বিরলতার ওপর। এটা সাইটের পয়েন্ট,
-              ওয়ালেট থেকে কাটা হয় না।
+              Sparks accrue from the moment the card is cut. The rate follows rarity. These are
+              site points. Nothing is taken from a wallet.
             </p>
           </article>
           <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
-            <h2 className="text-2xl">রেফার</h2>
+            <h2 className="text-2xl">Refer</h2>
             <p className="mt-2 text-cream/70">
-              তোমার লিংক: <span className="text-gold">/join?ref=তোমারআইডি</span>। নতুন জন এলে তুমি{" "}
-              {formatNumber(REFERRER_BONUS)}, সে {formatNumber(INVITEE_BONUS)}। নিজের লিংকে নিজে
-              জয়েন হয় না।
+              Your link: <span className="text-gold">/join?ref=yourhandle</span>. A new holder pays
+              you {formatNumber(REFERRER_BONUS)} and receives {formatNumber(INVITEE_BONUS)}. You
+              cannot join through your own link.
             </p>
           </article>
           <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
-            <h2 className="text-2xl">ইনভাইট মাইলস্টোন</h2>
+            <h2 className="text-2xl">Invite milestones</h2>
             <ul className="mt-3 space-y-2 text-sm">
               {MILESTONES.map((milestone) => {
                 const done = mine?.milestonesClaimed.includes(milestone.count);
@@ -87,7 +87,7 @@ export function RewardsDesk() {
                   <li key={milestone.count} className="flex items-center justify-between gap-3">
                     <span>
                       {milestone.title}
-                      {done ? " · পেয়ে গেছ" : ""}
+                      {done ? " · claimed" : ""}
                     </span>
                     <span className="font-mono text-gold">{formatNumber(milestone.bonus)}</span>
                   </li>
@@ -98,9 +98,9 @@ export function RewardsDesk() {
         </div>
 
         <div className="mt-8 rounded-[28px] border border-gold/25 p-5">
-          <h2 className="text-2xl">হিসাব কষে দেখো</h2>
+          <h2 className="text-2xl">Run the numbers</h2>
           <label className="mt-4 block text-sm text-cream/70">
-            কতজন আনবে: {formatNumber(people)}
+            People you bring: {formatNumber(people)}
             <input
               type="range"
               min={0}
@@ -111,7 +111,7 @@ export function RewardsDesk() {
             />
           </label>
           <label className="mt-4 block text-sm text-cream/70">
-            কত {HOLD_UNIT_LABEL} হোল্ড: {formatNumber(minutes)}
+            {HOLD_UNIT_LABEL}s held: {formatNumber(minutes)}
             <input
               type="range"
               min={0}
@@ -131,34 +131,34 @@ export function RewardsDesk() {
                   rarity === id ? "bg-gold text-ink" : "border border-white/15"
                 }`}
               >
-                {RARITIES[id].bn}
+                {RARITIES[id].label}
               </button>
             ))}
           </div>
           <dl className="mt-5 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
             <div>
-              <dt className="text-cream/50">হোল্ড</dt>
+              <dt className="text-cream/50">Hold</dt>
               <dd className="font-mono text-lg">{formatNumber(estimate.hold)}</dd>
             </div>
             <div>
-              <dt className="text-cream/50">রেফার</dt>
+              <dt className="text-cream/50">Referrals</dt>
               <dd className="font-mono text-lg">{formatNumber(estimate.referrals)}</dd>
             </div>
             <div>
-              <dt className="text-cream/50">মাইলস্টোন</dt>
+              <dt className="text-cream/50">Milestones</dt>
               <dd className="font-mono text-lg">{formatNumber(estimate.milestones)}</dd>
             </div>
             <div>
-              <dt className="text-cream/50">মোট</dt>
+              <dt className="text-cream/50">Total</dt>
               <dd className="font-mono text-lg text-gold">{formatNumber(estimate.total)}</dd>
             </div>
           </dl>
-          <p className="mt-3 text-xs text-cream/45">জয়েন বোনাস {formatNumber(JOIN_BONUS)} ধরা আছে।</p>
+          <p className="mt-3 text-xs text-cream/45">Includes the {formatNumber(JOIN_BONUS)} join bonus.</p>
         </div>
       </section>
 
       <aside className="rounded-[28px] border border-white/10 bg-white/5 p-5">
-        <h2 className="text-xl">তোমার কার্ড</h2>
+        <h2 className="text-xl">Your card</h2>
         {mine ? (
           <div className="mt-4 space-y-3 text-sm">
             <p className="text-2xl">{mine.name}</p>
@@ -166,40 +166,40 @@ export function RewardsDesk() {
               @{mine.displayHandle} · {mine.rarityLabel}
             </p>
             <p>
-              মোট স্পার্ক <span className="font-mono text-gold">{formatNumber(mine.sparks)}</span>
+              Total sparks <span className="font-mono text-gold">{formatNumber(mine.sparks)}</span>
             </p>
             <p className="text-cream/70">
-              এর মধ্যে হোল্ড {formatNumber(mine.holdSparks)}, বাকি জয়েন-রেফার-জ্যাকপট।
+              {formatNumber(mine.holdSparks)} of that is from holding. The rest is join, referral, and jackpot.
             </p>
             <p>
-              রেফার {formatNumber(mine.referrals)} · টিকিট {formatNumber(mine.tickets)} ·{" "}
+              Referrals {formatNumber(mine.referrals)} · tickets {formatNumber(mine.tickets)} ·{" "}
               {formatNumber(mine.holdPerUnit)} / {HOLD_UNIT_LABEL}
             </p>
             {upcoming ? (
               <p className="text-mint">
-                পরের ধাপ: {upcoming.title} ({formatNumber(mine.referrals)}/
+                Next step: {upcoming.title} ({formatNumber(mine.referrals)}/
                 {formatNumber(upcoming.count)})
               </p>
             ) : (
-              <p className="text-mint">সব ইনভাইট ধাপ পূরণ।</p>
+              <p className="text-mint">Every invite milestone is done.</p>
             )}
             <Button
               render={<Link href={`/card/${mine.handle}`} />}
               className="mt-2 h-11 rounded-full px-5"
               nativeButton={false}
             >
-              কার্ড খোলো
+              Open card
             </Button>
           </div>
         ) : (
           <div className="mt-4">
-            <p className="text-cream/70">এই ব্রাউজারে এখনো কোনো কার্ড সেভ নেই।</p>
+            <p className="text-cream/70">No card is saved in this browser yet.</p>
             <Button
               render={<Link href="/join" />}
               className="mt-4 h-11 rounded-full px-5"
               nativeButton={false}
             >
-              জয়েন করো
+              Join
             </Button>
           </div>
         )}

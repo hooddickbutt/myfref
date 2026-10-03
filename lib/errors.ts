@@ -11,7 +11,7 @@ export function errorResponse(error: unknown) {
   }
   console.error(error);
   return Response.json(
-    { ok: false as const, error: "সার্ভারে সমস্যা হয়েছে। আবার চেষ্টা করো।" },
+    { ok: false as const, error: "Something went wrong. Try again." },
     { status: 500 },
   );
 }

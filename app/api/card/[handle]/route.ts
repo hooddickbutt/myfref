@@ -8,11 +8,11 @@ export async function GET(_request: Request, context: { params: Promise<{ handle
   const { handle } = await context.params;
   const normalized = normalizeHandle(handle);
   if (!normalized) {
-    return Response.json({ ok: false, error: "আইডি ঠিক নেই।" }, { status: 400 });
+    return Response.json({ ok: false, error: "That handle is not valid." }, { status: 400 });
   }
   const card = await getHolder(normalized);
   if (!card) {
-    return Response.json({ ok: false, error: "এই কার্ড এখনো কাটা হয়নি।" }, { status: 404 });
+    return Response.json({ ok: false, error: "This card has not been created yet." }, { status: 404 });
   }
   return Response.json({ ok: true, card });
 }

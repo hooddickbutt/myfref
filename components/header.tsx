@@ -8,11 +8,11 @@ import { useMyHandle } from "@/lib/use-my-handle";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/", label: "হোম" },
-  { href: "/join", label: "জয়েন" },
-  { href: "/rewards", label: "রিওয়ার্ড" },
-  { href: "/jackpot", label: "জ্যাকপট" },
-  { href: "/board", label: "বোর্ড" },
+  { href: "/", label: "Home" },
+  { href: "/join", label: "Join" },
+  { href: "/rewards", label: "Rewards" },
+  { href: "/jackpot", label: "Jackpot" },
+  { href: "/board", label: "Board" },
 ];
 
 export function Header() {
@@ -30,7 +30,7 @@ export function Header() {
             <span className="block font-display text-lg tracking-[0.16em] text-gold">
               {TOKEN.name}
             </span>
-            <span className="block text-[11px] text-cream/60">প্রাইজ কার্ড</span>
+            <span className="block text-[11px] text-cream/60">Prize card</span>
           </span>
         </Link>
 
@@ -39,7 +39,7 @@ export function Header() {
             href={`/card/${mine}`}
             className="ml-auto rounded-full bg-gold px-3 py-1.5 text-sm font-medium whitespace-nowrap text-ink sm:ml-0"
           >
-            আমার কার্ড
+            My card
           </Link>
         ) : null}
         <nav className="flex w-full items-center gap-1 overflow-x-auto text-sm sm:ml-auto sm:w-auto">

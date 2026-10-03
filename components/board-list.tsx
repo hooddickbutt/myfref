@@ -8,9 +8,9 @@ import { formatCompact, formatNumber, formatSerial } from "@/lib/format";
 import type { PublicCard } from "@/lib/types";
 
 const sorts = [
-  { id: "sparks", label: "স্পার্ক" },
-  { id: "referrals", label: "রেফার" },
-  { id: "new", label: "নতুন" },
+  { id: "sparks", label: "Sparks" },
+  { id: "referrals", label: "Referrals" },
+  { id: "new", label: "Newest" },
 ] as const;
 
 export function BoardList({ cards }: { cards: PublicCard[] }) {
@@ -24,10 +24,10 @@ export function BoardList({ cards }: { cards: PublicCard[] }) {
   if (cards.length === 0) {
     return (
       <div className="rounded-[28px] border border-dashed border-gold/30 px-6 py-16 text-center">
-        <p className="font-display text-3xl">বোর্ড ফাঁকা</p>
-        <p className="mt-2 text-cream/65">প্রথম কার্ড কাটলে নাম এখানে উঠবে।</p>
+        <p className="font-display text-3xl">The board is empty</p>
+        <p className="mt-2 text-cream/65">The first card cut will show up here.</p>
         <Link href="/join" className="mt-6 inline-flex text-gold">
-          জয়েন করো
+          Join
         </Link>
       </div>
     );
@@ -70,7 +70,7 @@ export function BoardList({ cards }: { cards: PublicCard[] }) {
               <span className="text-right text-sm">
                 <span className="block font-mono text-gold">{formatNumber(card.sparks)}</span>
                 <span className="block text-xs text-cream/45">
-                  রেফার {formatNumber(card.referrals)} · {formatCompact(card.followers)}
+                  {formatNumber(card.referrals)} referrals · {formatCompact(card.followers)}
                 </span>
               </span>
             </Link>

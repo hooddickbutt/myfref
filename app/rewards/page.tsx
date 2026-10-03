@@ -1,7 +1,7 @@
 import { RewardsDesk } from "@/components/rewards-desk";
 
 export const metadata = {
-  title: "রিওয়ার্ড",
+  title: "Rewards",
 };
 
 export default function RewardsPage() {

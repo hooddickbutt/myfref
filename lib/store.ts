@@ -136,13 +136,13 @@ export async function getJackpotState() {
 export async function joinHolder(handleInput: string, refInput?: string | null) {
   const handle = normalizeHandle(handleInput);
   if (!handle) {
-    throw new GameError("সঠিক এক্স আইডি দাও। শুধু অক্ষর, সংখ্যা আর আন্ডারস্কোর — যেমন nasa।");
+    throw new GameError("Enter a real X handle. Letters, numbers, and underscores only, like nasa.");
   }
 
   const rawRef = (refInput ?? "").trim();
   const referredBy = rawRef ? normalizeHandle(rawRef) : null;
   if (rawRef && !referredBy) {
-    throw new GameError("রেফার আইডি ঠিক নেই। খালি রেখেও কার্ড কাটা যায়।");
+    throw new GameError("That referral handle is not valid. You can leave it blank.");
   }
 
   const existing = await getHolder(handle);
@@ -150,17 +150,17 @@ export async function joinHolder(handleInput: string, refInput?: string | null) 
     return {
       created: false,
       card: existing,
-      note: "এই এক্স আইডির কার্ড আগেই কাটা আছে।",
+      note: "This X handle already has a card.",
       referrer: existing.referredBy,
     };
   }
 
   const lookup = await lookupXProfile(handle);
   if (lookup.status === "missing") {
-    throw new GameError("এই এক্স আইডি পাওয়া যায়নি। বানান দেখে আবার দাও।");
+    throw new GameError("That X handle was not found. Check the spelling.");
   }
   if (lookup.status === "down") {
-    throw new GameError("এক্সের পাবলিক প্রোফাইল এখন ধরা যাচ্ছে না। একটু পরে আবার চেষ্টা করো।");
+    throw new GameError("X's public profile is not responding. Try again in a moment.");
   }
 
   const profile = lookup.profile;
@@ -172,7 +172,7 @@ export async function joinHolder(handleInput: string, refInput?: string | null) 
       return {
         created: false,
         card: presentHolder(again),
-        note: "এই এক্স আইডির কার্ড আগেই কাটা আছে।",
+        note: "This X handle already has a card.",
         referrer: again.referredBy,
       };
     }
@@ -213,10 +213,10 @@ export async function joinHolder(handleInput: string, refInput?: string | null) 
 
     const ignoredRef = Boolean(referredBy && referredBy !== handle && !referrer);
     const note = referrer
-      ? `@${referrer.displayHandle} এর লিংকে এসেছ। তুমি ${formatNumber(INVITEE_BONUS)} স্পার্ক বেশি পেয়েছ।`
+      ? `You joined from @${referrer.displayHandle}. Extra ${formatNumber(INVITEE_BONUS)} sparks added.`
       : ignoredRef
-        ? "রেফার আইডি পাওয়া যায়নি, তাই কার্ড একাই কাটা হয়েছে।"
-        : "কার্ড কাটা হয়েছে। প্রোফাইল ছবি বসে গেছে।";
+        ? "That referral handle was not found, so the card was created on its own."
+        : "Card created. Your profile photo is on it.";
 
     return {
       created: true,
@@ -230,20 +230,20 @@ export async function joinHolder(handleInput: string, refInput?: string | null) 
 
 export async function refreshHolder(handleInput: string) {
   const handle = normalizeHandle(handleInput);
-  if (!handle) throw new GameError("আইডি ঠিক নেই।");
+  if (!handle) throw new GameError("That handle is not valid.");
 
   const lookup = await lookupXProfile(handle);
   if (lookup.status === "missing") {
-    throw new GameError("এই এক্স প্রোফাইল এখন আর পাওয়া যাচ্ছে না।");
+    throw new GameError("That X profile cannot be found right now.");
   }
   if (lookup.status === "down") {
-    throw new GameError("প্রোফাইল আনা যায়নি। একটু পরে আবার চেষ্টা করো।");
+    throw new GameError("Could not refresh the profile. Try again in a moment.");
   }
 
   return enqueue(async () => {
     const store = await readStore();
     const holder = store.holders.find((item) => item.handle === handle);
-    if (!holder) throw new GameError("এই কার্ড নেই।");
+    if (!holder) throw new GameError("That card does not exist.");
     holder.displayHandle = lookup.profile.screenName;
     holder.name = lookup.profile.name;
     holder.avatar = lookup.profile.avatar;
@@ -260,14 +260,14 @@ export async function drawJackpot() {
     const now = Date.now();
 
     if (store.holders.length < MIN_DRAW_HOLDERS) {
-      throw new GameError("জ্যাকপট ঘোরাতে অন্তত দুইজন হোল্ডার লাগবে।");
+      throw new GameError("The jackpot needs at least two holders.");
     }
     if (store.pool < MIN_POOL) {
-      throw new GameError("প্রাইজ পুল এখনো ছোট। আরও কেউ জয়েন করলে পুল বাড়বে।");
+      throw new GameError("The prize pool is still too small. It grows when more people join.");
     }
     if (store.lastDrawAt && now - store.lastDrawAt < JACKPOT_COOLDOWN_MS) {
       const wait = Math.ceil((JACKPOT_COOLDOWN_MS - (now - store.lastDrawAt)) / 1000);
-      throw new GameError(`চাকা এখনো ঘুরছে। ${wait} সেকেন্ড পর আবার।`);
+      throw new GameError(`The wheel is cooling down. Try again in ${wait} seconds.`);
     }
 
     const weighted = store.holders.map((holder) => ({
@@ -277,7 +277,7 @@ export async function drawJackpot() {
     const total = weighted.reduce((sum, item) => sum + item.weight, 0);
     let roll = Math.random() * total;
     let winner = weighted[weighted.length - 1]?.holder;
-    if (!winner) throw new GameError("হোল্ডার নেই।");
+    if (!winner) throw new GameError("There are no holders yet.");
     for (const item of weighted) {
       roll -= item.weight;
       if (roll <= 0) {
